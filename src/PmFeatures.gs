@@ -73,10 +73,10 @@ function buildMilestoneTimeline_(sheet) {
 function buildDashboard_(sheet, seedMeta) {
   sheet.getRange('A1:J40').breakApart().clear();
   sheet.setConditionalFormatRules([]);
-  sheet.getRange('A1:H1').merge().setValue('プロジェクト横断 Dashboard');
-  sheet.getRange('A2:H2').merge().setValue('Projects / Tasks / Risks / Dependencies / Decisions を数式で集計');
-  sheet.getRange('A4:H4').setValues([['全プロジェクト数','進行中','要確認','期限超過','ブロック中','危険','更新漏れ','30日以内MS']]);
-  sheet.getRange('A5:H5').setFormulas([[
+  sheet.getRange('A1:I1').merge().setValue('プロジェクト横断 Dashboard');
+  sheet.getRange('A2:I2').merge().setValue('Projects / Tasks / Risks / Dependencies / Decisions を数式で集計');
+  sheet.getRange('A4:I4').setValues([['全プロジェクト数','進行中','要確認','期限超過','ブロック中','危険','更新漏れ','7日以内MS','30日以内MS']]);
+  sheet.getRange('A5:I5').setFormulas([[
     '=COUNTA(Projects!$A$2:$A$1000)',
     '=COUNTIF(Projects!$F$2:$F$1000,"進行中")+COUNTIF(Tasks!$D$2:$D$1000,"進行中")+COUNTIF(\'Risks & Milestones\'!$D$2:$D$1000,"進行中")+COUNTIF(Dependencies!$E$2:$E$1000,"進行中")',
     '=COUNTIF(Projects!$F$2:$F$1000,"棚卸し待ち")+COUNTIF(Tasks!$D$2:$D$1000,"棚卸し待ち")+COUNTIF(\'Risks & Milestones\'!$D$2:$D$1000,"棚卸し待ち")+COUNTIF(Dependencies!$E$2:$E$1000,"棚卸し待ち")',
@@ -84,6 +84,7 @@ function buildDashboard_(sheet, seedMeta) {
     '=COUNTIF(Projects!$F$2:$F$1000,"ブロック")+COUNTIF(Tasks!$D$2:$D$1000,"ブロック")+COUNTIF(\'Risks & Milestones\'!$D$2:$D$1000,"ブロック")+COUNTIF(Dependencies!$E$2:$E$1000,"ブロック")',
     '=COUNTIF(Projects!$N$2:$N$1000,"危険")',
     '=COUNTIFS(Projects!$A$2:$A$1000,"<>",Projects!$F$2:$F$1000,"<>完了",Projects!$F$2:$F$1000,"<>中止",Projects!$M$2:$M$1000,"<"&TODAY()-Master!$L$2)+COUNTIFS(Projects!$A$2:$A$1000,"<>",Projects!$F$2:$F$1000,"<>完了",Projects!$F$2:$F$1000,"<>中止",Projects!$M$2:$M$1000,"")',
+    '=COUNTIFS(\'Risks & Milestones\'!$A$2:$A$1000,"マイルストーン",\'Risks & Milestones\'!$H$2:$H$1000,">="&TODAY(),\'Risks & Milestones\'!$H$2:$H$1000,"<="&TODAY()+7,\'Risks & Milestones\'!$D$2:$D$1000,"<>完了",\'Risks & Milestones\'!$D$2:$D$1000,"<>中止")',
     '=COUNTIFS(\'Risks & Milestones\'!$A$2:$A$1000,"マイルストーン",\'Risks & Milestones\'!$H$2:$H$1000,">="&TODAY(),\'Risks & Milestones\'!$H$2:$H$1000,"<="&TODAY()+30,\'Risks & Milestones\'!$D$2:$D$1000,"<>完了",\'Risks & Milestones\'!$D$2:$D$1000,"<>中止")'
   ]]);
 
@@ -107,20 +108,20 @@ function buildDashboard_(sheet, seedMeta) {
   sheet.getRange('G18').setFormula('=IFERROR(ARRAY_CONSTRAIN(SORT(FILTER({\'Decision Log\'!C2:C1000,\'Decision Log\'!B2:B1000,\'Decision Log\'!D2:D1000,\'Decision Log\'!I2:I1000},\'Decision Log\'!B2:B1000<>""),1,FALSE),10,4),"")');
   sheet.getRange('G18:G27').setNumberFormat('yyyy-mm-dd');
 
-  sheet.getRange('A31:H31').merge().setValue('初期投入: ' + seedMeta.source + ' の' + seedMeta.projectCount + '件（' + seedMeta.generatedAt + '確認）');
-  sheet.getRange('A32:H32').merge().setValue('健康度と更新漏れは数式判定。更新期限はMaster!L2で変更できます。');
+  sheet.getRange('A31:I31').merge().setValue('初期投入: ' + seedMeta.source + ' の' + seedMeta.projectCount + '件（' + seedMeta.generatedAt + '確認）');
+  sheet.getRange('A32:I32').merge().setValue('健康度と更新漏れは数式判定。更新期限はMaster!L2で変更できます。');
 
   sheet.setHiddenGridlines(true);
   sheet.setFrozenRows(2);
   sheet.getRange('A1:J32').setFontFamily('Arial').setVerticalAlignment('middle');
-  sheet.getRange('A1:H1').setFontSize(18).setFontWeight('bold').setBackground('#F1F3F4').setHorizontalAlignment('left');
-  sheet.getRange('A2:H2').setFontSize(10).setFontColor('#5F6368');
-  sheet.getRange('A4:H4').setBackground('#E8EAED').setFontWeight('bold').setHorizontalAlignment('center').setWrap(true);
-  sheet.getRange('A5:H5').setFontSize(18).setFontWeight('bold').setHorizontalAlignment('center').setNumberFormat('0');
+  sheet.getRange('A1:I1').setFontSize(18).setFontWeight('bold').setBackground('#F1F3F4').setHorizontalAlignment('left');
+  sheet.getRange('A2:I2').setFontSize(10).setFontColor('#5F6368');
+  sheet.getRange('A4:I4').setBackground('#E8EAED').setFontWeight('bold').setHorizontalAlignment('center').setWrap(true);
+  sheet.getRange('A5:I5').setFontSize(18).setFontWeight('bold').setHorizontalAlignment('center').setNumberFormat('0');
   ['A8:B8','D8:E8','G8:J8','A17:D17','G17:J17'].forEach(function(a1) {
     sheet.getRange(a1).setBackground('#E8EAED').setFontWeight('bold').setWrap(true);
   });
-  sheet.getRange('A31:H32').setFontSize(9).setFontColor('#5F6368').setWrap(true);
+  sheet.getRange('A31:I32').setFontSize(9).setFontColor('#5F6368').setWrap(true);
   [120,170,120,180,120,35,105,220,110,110].forEach(function(width,index) {
     sheet.setColumnWidth(index + 1, width);
   });
@@ -128,6 +129,6 @@ function buildDashboard_(sheet, seedMeta) {
   sheet.setRowHeight(5, 34);
   sheet.setConditionalFormatRules([
     SpreadsheetApp.newConditionalFormatRule().whenNumberGreaterThan(0).setBackground('#FDECEC').setFontColor('#B3261E').setRanges([sheet.getRange('D5:F5')]).build(),
-    SpreadsheetApp.newConditionalFormatRule().whenNumberGreaterThan(0).setBackground('#FEF3C7').setFontColor('#92400E').setRanges([sheet.getRange('C5'),sheet.getRange('G5:H5')]).build()
+    SpreadsheetApp.newConditionalFormatRule().whenNumberGreaterThan(0).setBackground('#FEF3C7').setFontColor('#92400E').setRanges([sheet.getRange('C5'),sheet.getRange('G5:I5')]).build()
   ]);
 }

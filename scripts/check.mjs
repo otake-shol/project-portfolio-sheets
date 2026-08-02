@@ -35,7 +35,7 @@ try {
     .map((name) => readFileSync(join(temporaryOutput, name), 'utf8'))
     .join('\n');
   new Function(source);
-  for (const required of ['Dependencies', 'Milestone Timeline', 'Decision Log', '健康度', '更新漏れ']) {
+  for (const required of ['Dependencies', 'Milestone Timeline', 'Decision Log', '健康度', '更新漏れ', '7日以内MS', '30日以内MS']) {
     assert(source.includes(required), `PM機能が不足しています: ${required}`);
   }
 } finally {
