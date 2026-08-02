@@ -6,10 +6,10 @@
 
 ## Google Driveで試す
 
-- [公開テンプレートを開く](https://docs.google.com/spreadsheets/d/1bQCev4HdxU6qpLsIQAqIPkZf7SXVCLwJknwIDBn-TSU/edit?usp=sharing)
-- [自分のGoogle Driveへコピーする](https://docs.google.com/spreadsheets/d/1bQCev4HdxU6qpLsIQAqIPkZf7SXVCLwJknwIDBn-TSU/copy)
+- Portfolio版: [公開テンプレートを開く](https://docs.google.com/spreadsheets/d/1bQCev4HdxU6qpLsIQAqIPkZf7SXVCLwJknwIDBn-TSU/edit?usp=sharing) / [自分のGoogle Driveへコピーする](https://docs.google.com/spreadsheets/d/1bQCev4HdxU6qpLsIQAqIPkZf7SXVCLwJknwIDBn-TSU/copy)
+- Single版: [公開テンプレートを開く](https://docs.google.com/spreadsheets/d/1CFKVIIpwmEBr49hhlaEwsajoBLPVZlGvLQTtV5fjT3I/edit?usp=sharing) / [自分のGoogle Driveへコピーする](https://docs.google.com/spreadsheets/d/1CFKVIIpwmEBr49hhlaEwsajoBLPVZlGvLQTtV5fjT3I/copy)
 
-公開テンプレートは閲覧専用で、匿名サンプル3件を収録しています。編集する場合はコピーを作成してください。
+公開テンプレートは閲覧専用です。Portfolio版は匿名サンプル3件、Single版は匿名サンプル1件を収録しています。編集する場合はコピーを作成してください。
 
 ## 管理できる内容
 
