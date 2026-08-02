@@ -1,12 +1,14 @@
 const SINGLE_TIME_ZONE = 'Asia/Tokyo';
 const SINGLE_MAX_ROWS = 1000;
 const SINGLE_GANTT_PERIODS = 52;
+const SINGLE_SUMMARY_PERIODS = 18;
+const SINGLE_SUMMARY_ITEMS = 18;
 const SINGLE_SHEET_NAMES = Object.freeze({
-  dashboard: 'ダッシュボード', guide: 'ガイド', charter: 'プロジェクト憲章', workItems: 'WBS', gantt: 'ガントチャート',
+  dashboard: 'ダッシュボード', guide: 'ガイド', charter: 'プロジェクト憲章', summarySchedule: '概要スケジュール', workItems: 'WBS', gantt: 'ガントチャート',
   raid: 'RAIDログ', stakeholders: 'ステークホルダー', decisions: '意思決定・変更ログ', master: 'マスター'
 });
 const SINGLE_SHEET_ORDER = Object.freeze([
-  SINGLE_SHEET_NAMES.dashboard, SINGLE_SHEET_NAMES.guide, SINGLE_SHEET_NAMES.charter, SINGLE_SHEET_NAMES.workItems,
+  SINGLE_SHEET_NAMES.dashboard, SINGLE_SHEET_NAMES.guide, SINGLE_SHEET_NAMES.charter, SINGLE_SHEET_NAMES.summarySchedule, SINGLE_SHEET_NAMES.workItems,
   SINGLE_SHEET_NAMES.gantt, SINGLE_SHEET_NAMES.raid, SINGLE_SHEET_NAMES.stakeholders, SINGLE_SHEET_NAMES.decisions, SINGLE_SHEET_NAMES.master
 ]);
 
@@ -70,6 +72,7 @@ function buildSingleWorkbook_(ss) {
   singleBuildGuide_(singleSheet_(ss, SINGLE_SHEET_NAMES.guide));
   singleBuildCharter_(singleSheet_(ss, SINGLE_SHEET_NAMES.charter));
   singleBuildWorkItems_(singleSheet_(ss, SINGLE_SHEET_NAMES.workItems));
+  singleBuildSummarySchedule_(singleSheet_(ss, SINGLE_SHEET_NAMES.summarySchedule));
   singleBuildGantt_(singleSheet_(ss, SINGLE_SHEET_NAMES.gantt));
   singleBuildRaid_(singleSheet_(ss, SINGLE_SHEET_NAMES.raid));
   singleBuildStakeholders_(singleSheet_(ss, SINGLE_SHEET_NAMES.stakeholders));

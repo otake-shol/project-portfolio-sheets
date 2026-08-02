@@ -1,16 +1,16 @@
 function singleBuildMaster_(sheet) {
   const rows = [
-    ['状態','優先度','種別','RAID種別','確率','影響度','記録種別','変更管理状態','全体状態','開発アプローチ','フェーズ','エンゲージメント','ガント表示単位'],
-    ['未着手','最優先','タスク','リスク','低','低','変更要求','起票','健全','予測型','立上げ','不認識','日次'],
-    ['進行中','高','マイルストーン','前提','中','中','意思決定','影響分析中','注意','反復型','計画','抵抗','週次'],
-    ['ブロック','中','成果物','課題','高','高','','承認','危険','漸進型','実行','中立',''],
-    ['完了','低','ユーザーストーリー','依存関係','','','','却下','','アジャイル','監視・コントロール','支持',''],
-    ['保留','','作業パッケージ','','','','','実施中','','ハイブリッド','終結','主導',''],
-    ['中止','','','','','','','完了','','','','','']
+    ['状態','優先度','種別','RAID種別','確率','影響度','記録種別','変更管理状態','全体状態','開発アプローチ','フェーズ','エンゲージメント','ガント表示単位','概要表示単位'],
+    ['未着手','最優先','タスク','リスク','低','低','変更要求','起票','健全','予測型','立上げ','不認識','日次','週次'],
+    ['進行中','高','マイルストーン','前提','中','中','意思決定','影響分析中','注意','反復型','計画','抵抗','週次','月次'],
+    ['ブロック','中','成果物','課題','高','高','','承認','危険','漸進型','実行','中立','',''],
+    ['完了','低','ユーザーストーリー','依存関係','','','','却下','','アジャイル','監視・コントロール','支持','',''],
+    ['保留','','作業パッケージ','','','','','実施中','','ハイブリッド','終結','主導','',''],
+    ['中止','','','','','','','完了','','','','','','']
   ];
-  sheet.clear(); sheet.getRange(1, 1, rows.length, rows[0].length).setValues(rows); styleTable_(sheet, 13, rows.length);
-  sheet.setFrozenRows(1); resetFilter_(sheet, 'A1:M7');
-  for (let column = 1; column <= 13; column += 1) sheet.setColumnWidth(column, 135);
+  sheet.clear(); sheet.getRange(1, 1, rows.length, rows[0].length).setValues(rows); styleTable_(sheet, 14, rows.length);
+  sheet.setFrozenRows(1); resetFilter_(sheet, 'A1:N7');
+  for (let column = 1; column <= 14; column += 1) sheet.setColumnWidth(column, 135);
 }
 
 function singleBuildGuide_(sheet) {
@@ -19,8 +19,9 @@ function singleBuildGuide_(sheet) {
     ['使い方', '「プロジェクト憲章」で基準線を合意し、「WBS」「RAIDログ」「ステークホルダー」「意思決定・変更ログ」を定例で更新します。'],
     ['ガバナンス', '「プロジェクト憲章」のスポンサー・意思決定方法と「意思決定・変更ログ」で説明責任を残します。'],
     ['スコープ', '「プロジェクト憲章」の目的・成果物・受入基準と「WBS」で管理します。'],
-    ['スケジュール', '「WBS」で階層、先行タスク、基準日程、実績日程、進捗を管理し、「ガントチャート」で差異を確認します。'],
-    ['WBS・ガントチャート', '「WBS」を唯一の入力元とし、「ガントチャート」は日次／週次を切り替えられる表示専用ビューとして使います。'],
+    ['スケジュール', '「WBS」で階層、先行タスク、基準日程、実績日程、進捗を管理し、「概要スケジュール」で関係者と主要日程を合意、「ガントチャート」で詳細差異を確認します。'],
+    ['概要スケジュール', 'WBSの階層1とマイルストーンを最大18件まで自動抽出し、月次／週次の一枚絵として計画書や関係者説明に使います。'],
+    ['WBS・ガントチャート', '「WBS」を唯一の入力元とし、「ガントチャート」は日次／週次を切り替えられる内部管理用ビューとして使います。'],
     ['財務', '「プロジェクト憲章」の予算ベースライン・予測・実績を定例更新します。'],
     ['ステークホルダー', '「ステークホルダー」で影響度・関心度・コミュニケーションを管理します。'],
     ['リソース', '担当者・チーム・関係者の役割を「WBS」へ反映します。'],
@@ -31,7 +32,7 @@ function singleBuildGuide_(sheet) {
     ['ISO 21502', 'https://committee.iso.org/sites/tc258/home/projects/published/iso-21502.html'],
     ['スクラムガイド', 'https://scrumguides.org/scrum-guide.html']
   ];
-  sheet.clear(); sheet.getRange(1, 1, rows.length, 2).setValues(rows); styleHeader_(sheet, 2); sheet.getRange('A2:B' + rows.length).setWrap(true);
+  singleResetSheetLayout_(sheet); sheet.clear(); sheet.getRange(1, 1, rows.length, 2).setValues(rows); styleHeader_(sheet, 2); sheet.getRange('A2:B' + rows.length).setWrap(true);
   sheet.getRange('A1:B1').merge().setValue('ガイド — PMBOK参照型MVP'); sheet.getRange('A1:B1').setBackground('#E8EAED').setFontWeight('bold');
   sheet.setFrozenRows(1); sheet.setColumnWidth(1, 220); sheet.setColumnWidth(2, 720);
 }
@@ -68,7 +69,7 @@ function singleBuildGantt_(sheet) {
   const lastColumn = 11 + SINGLE_GANTT_PERIODS;
   if (sheet.getMaxRows() < lastRow) sheet.insertRowsAfter(sheet.getMaxRows(), lastRow - sheet.getMaxRows());
   if (sheet.getMaxColumns() < lastColumn) sheet.insertColumnsAfter(sheet.getMaxColumns(), lastColumn - sheet.getMaxColumns());
-  sheet.clear(); sheet.setConditionalFormatRules([]); sheet.setHiddenGridlines(true);
+  singleResetSheetLayout_(sheet); sheet.clear(); sheet.setConditionalFormatRules([]); sheet.setHiddenGridlines(true);
   sheet.getRange(1, 1, 1, 11).merge().setValue('WBS ガントチャート').setBackground('#E8EAED').setFontWeight('bold').setFontSize(18);
   sheet.getRange('A2:H2').setValues([['表示開始日',singleDate_(SINGLE_PROJECT_SEED.project.startDate),'','表示単位','週次','','表示期間',26]]);
   sheet.getRange('A3:H3').setValues([['凡例','計画','','実績','','遅延／ブロック','','◆ マイルストーン']]);
@@ -81,6 +82,51 @@ function singleBuildGantt_(sheet) {
   sheet.getRange(1, 1, lastRow, lastColumn).setFontFamily('Arial').setVerticalAlignment('middle'); sheet.getRange(1, 1, 1, 11).setBackground('#E8EAED').setFontWeight('bold').setFontSize(18); sheet.setRowHeight(1, 36); sheet.getRange(4, 1, 1, lastColumn).setBackground('#E8EAED').setFontWeight('bold').setWrap(true); sheet.getRange('B3').setBackground('#E8F0FE'); sheet.getRange('D3').setBackground('#E6F4EA'); sheet.getRange('F3').setBackground('#FDECEC'); sheet.getRange('H3').setBackground('#F3E8FD');
   sheet.setFrozenRows(4); sheet.setFrozenColumns(11); [110,105,120,300,105,120,105,105,105,105,80].forEach(function(width, index) { sheet.setColumnWidth(index + 1, width); }); for (let column = 12; column <= lastColumn; column += 1) sheet.setColumnWidth(column, 42);
   singleApplyGanttRules_(sheet, lastRow, lastColumn);
+}
+
+function singleBuildSummarySchedule_(sheet) {
+  const lastRow = 5 + SINGLE_SUMMARY_ITEMS;
+  const lastColumn = 7 + SINGLE_SUMMARY_PERIODS;
+  if (sheet.getMaxRows() < lastRow) sheet.insertRowsAfter(sheet.getMaxRows(), lastRow - sheet.getMaxRows());
+  if (sheet.getMaxColumns() < lastColumn) sheet.insertColumnsAfter(sheet.getMaxColumns(), lastColumn - sheet.getMaxColumns());
+  singleResetSheetLayout_(sheet); sheet.clear(); sheet.setConditionalFormatRules([]); sheet.setHiddenGridlines(true);
+  sheet.getRange(1, 1, 1, lastColumn).merge().setValue('プロジェクト 概要スケジュール').setBackground('#E8EAED').setFontWeight('bold').setFontSize(18);
+  sheet.getRange(2, 1, 1, lastColumn).merge().setValue(SINGLE_PROJECT_SEED.project.name + '｜主要成果物・マイルストーン').setFontWeight('bold').setFontSize(12);
+  sheet.getRange('A3:H3').setValues([['全体状態','','表示開始日','','表示単位','','表示期間','']]);
+  sheet.getRange('B3').setFormula('=\'プロジェクト憲章\'!B8');
+  sheet.getRange('D3').setFormula('=DATE(YEAR(\'プロジェクト憲章\'!B14),MONTH(\'プロジェクト憲章\'!B14),1)');
+  sheet.getRange('F3').setValue('月次'); sheet.getRange('H3').setValue(12); sheet.getRange('I3:K3').merge().setValue('最終レビュー日'); sheet.getRange('L3:N3').merge().setFormula('=\'プロジェクト憲章\'!B22');
+  sheet.getRange('A4:H4').setValues([['凡例','主要日程','','完了','','遅延／ブロック','','◆ マイルストーン']]);
+  sheet.getRange('A5:G5').setValues([['WBS番号','区分','主要活動・成果物','担当者','開始','終了','状態']]);
+  sheet.getRange('A6').setFormula('=IFERROR(ARRAY_CONSTRAIN(SORT(FILTER({\'WBS\'!A2:A1000,\'WBS\'!D2:D1000,\'WBS\'!E2:E1000,\'WBS\'!H2:H1000,\'WBS\'!I2:I1000,\'WBS\'!J2:J1000,\'WBS\'!F2:F1000},\'WBS\'!A2:A1000<>"",((\'WBS\'!C2:C1000=1)+(\'WBS\'!D2:D1000="マイルストーン"))>0,\'WBS\'!I2:I1000<>"",\'WBS\'!J2:J1000<>""),5,TRUE),' + SINGLE_SUMMARY_ITEMS + ',7),"")');
+  sheet.getRange('H5').setFormula('=IF(COLUMN()-7<=$H$3,IF($F$3="週次",$D$3+(COLUMN()-8)*7,EDATE($D$3,COLUMN()-8)),"")');
+  sheet.getRange('H5').copyTo(sheet.getRange(5, 8, 1, SINGLE_SUMMARY_PERIODS), SpreadsheetApp.CopyPasteType.PASTE_FORMULA, false);
+  sheet.getRange('H6').setFormula('=IF(OR($A6="",H$5=""),"",IF(AND($B6="マイルストーン",H$5<=$F6,IF($F$3="週次",H$5+6,EOMONTH(H$5,0))>=$F6),"◆",""))');
+  sheet.getRange('H6').copyTo(sheet.getRange(6, 8, SINGLE_SUMMARY_ITEMS, SINGLE_SUMMARY_PERIODS), SpreadsheetApp.CopyPasteType.PASTE_FORMULA, false);
+  const master = singleSheet_(sheet.getParent(), SINGLE_SHEET_NAMES.master);
+  setDateValidation_(sheet.getRange('D3')); setListValidation_(sheet.getRange('F3'), master.getRange('N2:N3'), '週次または月次を選択');
+  sheet.getRange('H3').setDataValidation(SpreadsheetApp.newDataValidation().requireNumberBetween(4, SINGLE_SUMMARY_PERIODS).setAllowInvalid(false).setHelpText('4から18期間で入力').build());
+  sheet.getRange('D3').setNumberFormat('yyyy-mm-dd'); sheet.getRange('L3:N3').setNumberFormat('yyyy-mm-dd'); sheet.getRange('E6:F' + lastRow).setNumberFormat('yyyy-mm-dd'); sheet.getRange(5, 8, 1, SINGLE_SUMMARY_PERIODS).setNumberFormat('m/d');
+  sheet.getRange(1, 1, lastRow, lastColumn).setFontFamily('Arial').setVerticalAlignment('middle'); sheet.getRange('A3:N3').setBackground('#F8F9FA').setFontWeight('bold'); sheet.getRange(5, 1, 1, lastColumn).setBackground('#E8EAED').setFontWeight('bold').setWrap(true);
+  sheet.getRange('B4').setBackground('#E8F0FE'); sheet.getRange('D4').setBackground('#E6F4EA'); sheet.getRange('F4').setBackground('#FDECEC'); sheet.getRange('H4').setBackground('#F3E8FD');
+  sheet.getRange('C6:C' + lastRow).setWrap(true); sheet.setRowHeight(1, 36); sheet.setRowHeight(2, 28); sheet.setRowHeights(6, SINGLE_SUMMARY_ITEMS, 30); sheet.setFrozenRows(5);
+  [95,115,280,115,95,95,100].forEach(function(width, index) { sheet.setColumnWidth(index + 1, width); }); for (let column = 8; column <= lastColumn; column += 1) sheet.setColumnWidth(column, 50);
+  singleApplySummaryScheduleRules_(sheet, lastRow, lastColumn);
+}
+
+function singleApplySummaryScheduleRules_(sheet, lastRow, lastColumn) {
+  const body = sheet.getRange(6, 8, lastRow - 5, lastColumn - 7);
+  const header = sheet.getRange(5, 8, 1, lastColumn - 7);
+  const periodEnd = 'IF($F$3="週次",H$5+6,EOMONTH(H$5,0))';
+  const rules = [
+    SpreadsheetApp.newConditionalFormatRule().whenTextEqualTo('◆').setBackground('#F3E8FD').setFontColor('#681DA8').setBold(true).setRanges([body]).build(),
+    SpreadsheetApp.newConditionalFormatRule().whenFormulaSatisfied('=AND($A6<>"",H$5<>"",$G6="ブロック",H$5<=$F6,' + periodEnd + '>=$E6)').setBackground('#FDECEC').setRanges([body]).build(),
+    SpreadsheetApp.newConditionalFormatRule().whenFormulaSatisfied('=AND($A6<>"",H$5<>"",$F6<TODAY(),$G6<>"完了",$G6<>"中止",H$5<=$F6,' + periodEnd + '>=$E6)').setBackground('#FDECEC').setRanges([body]).build(),
+    SpreadsheetApp.newConditionalFormatRule().whenFormulaSatisfied('=AND($A6<>"",H$5<>"",$B6<>"マイルストーン",$G6="完了",H$5<=$F6,' + periodEnd + '>=$E6)').setBackground('#E6F4EA').setRanges([body]).build(),
+    SpreadsheetApp.newConditionalFormatRule().whenFormulaSatisfied('=AND($A6<>"",H$5<>"",$B6<>"マイルストーン",H$5<=$F6,' + periodEnd + '>=$E6)').setBackground('#E8F0FE').setRanges([body]).build(),
+    SpreadsheetApp.newConditionalFormatRule().whenFormulaSatisfied('=AND(H$5<>"",H$5<=TODAY(),' + periodEnd + '>=TODAY())').setBackground('#FEF3C7').setFontColor('#92400E').setRanges([header]).build()
+  ];
+  sheet.setConditionalFormatRules(rules);
 }
 
 function singleApplyGanttRules_(sheet, lastRow, lastColumn) {
@@ -140,10 +186,14 @@ function singleApplyExposureRules_(sheet, a1Range) {
 }
 
 function singleBuildDashboard_(sheet) {
-  sheet.clear(); sheet.setConditionalFormatRules([]); sheet.getRange('A1:H1').merge().setValue('単一プロジェクト ダッシュボード'); sheet.getRange('A2:H2').merge().setValue(SINGLE_PROJECT_SEED.project.name + ' — ' + SINGLE_PROJECT_SEED_META.source + '（' + SINGLE_PROJECT_SEED_META.generatedAt + '）');
+  singleResetSheetLayout_(sheet); sheet.clear(); sheet.setConditionalFormatRules([]); sheet.getRange('A1:H1').merge().setValue('単一プロジェクト ダッシュボード'); sheet.getRange('A2:H2').merge().setValue(SINGLE_PROJECT_SEED.project.name + ' — ' + SINGLE_PROJECT_SEED_META.source + '（' + SINGLE_PROJECT_SEED_META.generatedAt + '）');
   sheet.getRange('A4:H4').setValues([['全体状態','未完了項目','ブロック','期限超過','高露出RAID','次のMS','予算差異','次回レビュー']]);
   sheet.getRange('A5:H5').setFormulas([['=\'プロジェクト憲章\'!B8','=COUNTIFS(\'WBS\'!A2:A1000,"<>",\'WBS\'!F2:F1000,"<>完了",\'WBS\'!F2:F1000,"<>中止")','=COUNTIF(\'WBS\'!F2:F1000,"ブロック")+COUNTIF(\'RAIDログ\'!D2:D1000,"ブロック")','=COUNTIFS(\'WBS\'!J2:J1000,"<"&TODAY(),\'WBS\'!J2:J1000,"<>",\'WBS\'!F2:F1000,"<>完了",\'WBS\'!F2:F1000,"<>中止")','=COUNTIFS(\'RAIDログ\'!G2:G1000,"高",\'RAIDログ\'!D2:D1000,"<>完了",\'RAIDログ\'!D2:D1000,"<>中止")','=IFERROR(INDEX(SORT(FILTER({\'WBS\'!E2:E1000,\'WBS\'!J2:J1000},\'WBS\'!D2:D1000="マイルストーン",\'WBS\'!F2:F1000<>"完了",\'WBS\'!J2:J1000>=TODAY()),2,TRUE),1,1),"")','=\'プロジェクト憲章\'!B17-\'プロジェクト憲章\'!B16','=\'プロジェクト憲章\'!B23']]);
   sheet.getRange('A8:D8').setValues([['次のマイルストーン','期限','状態','担当者']]); sheet.getRange('A9').setFormula('=IFERROR(ARRAY_CONSTRAIN(SORT(FILTER({\'WBS\'!E2:E1000,\'WBS\'!J2:J1000,\'WBS\'!F2:F1000,\'WBS\'!H2:H1000},\'WBS\'!D2:D1000="マイルストーン",\'WBS\'!F2:F1000<>"完了"),2,TRUE),8,4),"")'); sheet.getRange('B9:B16').setNumberFormat('yyyy-mm-dd');
   sheet.getRange('G5').setNumberFormat('#,##0'); sheet.getRange('H5').setNumberFormat('yyyy-mm-dd');
   sheet.setHiddenGridlines(true); sheet.setFrozenRows(2); sheet.getRange('A1:H20').setFontFamily('Arial').setVerticalAlignment('middle'); sheet.getRange('A1:H1').setBackground('#E8EAED').setFontWeight('bold').setFontSize(18); sheet.getRange('A4:H4').setBackground('#E8EAED').setFontWeight('bold').setWrap(true); sheet.getRange('A5:H5').setFontWeight('bold').setFontSize(14); sheet.getRange('A8:D8').setBackground('#E8EAED').setFontWeight('bold'); [240,130,105,105,120,240,120,120].forEach(function(width, index) { sheet.setColumnWidth(index + 1, width); }); applyHealthRules_(sheet, 'A5');
+}
+
+function singleResetSheetLayout_(sheet) {
+  sheet.setFrozenRows(0); sheet.setFrozenColumns(0); sheet.getDataRange().breakApart();
 }
