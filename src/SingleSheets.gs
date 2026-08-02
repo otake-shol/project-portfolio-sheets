@@ -16,22 +16,22 @@ function singleBuildMaster_(sheet) {
 function singleBuildGuide_(sheet) {
   const rows = [
     ['単一プロジェクト管理テンプレート', 'PMBOK第8版を参照した、現場で更新し続けられる最小構成です。'],
-    ['使い方', 'Project Charterで基準線を合意し、Work Items・RAID・Stakeholders・Decision Logを定例で更新します。'],
-    ['ガバナンス', 'Project Charterのスポンサー、意思決定方法、Decision Logで説明責任を残します。'],
-    ['スコープ', 'Project Charterの目的・成果物・受入基準とWork Itemsで管理します。'],
-    ['スケジュール', 'Work Itemsの開始日・期限・進捗、マイルストーン種別を使います。'],
-    ['財務', 'Project Charterの予算ベースライン・予測・実績を定例更新します。'],
-    ['ステークホルダー', 'Stakeholdersで影響度、関心、コミュニケーションを管理します。'],
-    ['リソース', '担当者、チーム、Stakeholdersの役割をWork Itemsへ反映します。'],
-    ['リスク', 'RAID Logでリスク、前提、課題、依存関係と対応を追跡します。'],
-    ['テーラリング・価値・品質', '目的に照らして列や運用頻度を調整し、品質・価値・説明責任をDashboardとCharterで確認します。'],
-    ['後続拡張', '予算・資源の明細、独立した変更台帳、定型Status ReportsはMVPでは別シートにせず、Charter・Decision Log・Work Itemsで扱います。'],
+    ['使い方', '「プロジェクト憲章」で基準線を合意し、「作業項目」「RAIDログ」「ステークホルダー」「意思決定・変更ログ」を定例で更新します。'],
+    ['ガバナンス', '「プロジェクト憲章」のスポンサー・意思決定方法と「意思決定・変更ログ」で説明責任を残します。'],
+    ['スコープ', '「プロジェクト憲章」の目的・成果物・受入基準と「作業項目」で管理します。'],
+    ['スケジュール', '「作業項目」の開始日・期限・進捗とマイルストーン種別を使います。'],
+    ['財務', '「プロジェクト憲章」の予算ベースライン・予測・実績を定例更新します。'],
+    ['ステークホルダー', '「ステークホルダー」で影響度・関心度・コミュニケーションを管理します。'],
+    ['リソース', '担当者・チーム・関係者の役割を「作業項目」へ反映します。'],
+    ['リスク', '「RAIDログ」でリスク・前提・課題・依存関係と対応を追跡します。'],
+    ['テーラリング・価値・品質', '目的に照らして列や運用頻度を調整し、品質・価値・説明責任を「ダッシュボード」と「プロジェクト憲章」で確認します。'],
+    ['後続拡張', '予算・資源の明細、独立した変更台帳、定型ステータスレポートはMVPでは別シートにせず、「プロジェクト憲章」「意思決定・変更ログ」「作業項目」で扱います。'],
     ['PMI PMBOK 第8版', 'https://www.pmi.org/standards/pmbok'],
     ['ISO 21502', 'https://committee.iso.org/sites/tc258/home/projects/published/iso-21502.html'],
-    ['Scrum Guide', 'https://scrumguides.org/scrum-guide.html']
+    ['スクラムガイド', 'https://scrumguides.org/scrum-guide.html']
   ];
   sheet.clear(); sheet.getRange(1, 1, rows.length, 2).setValues(rows); styleHeader_(sheet, 2); sheet.getRange('A2:B' + rows.length).setWrap(true);
-  sheet.getRange('A1:B1').merge().setValue('Guide — PMBOK-informed MVP'); sheet.getRange('A1:B1').setBackground('#E8EAED').setFontWeight('bold');
+  sheet.getRange('A1:B1').merge().setValue('ガイド — PMBOK参照型MVP'); sheet.getRange('A1:B1').setBackground('#E8EAED').setFontWeight('bold');
   sheet.setFrozenRows(1); sheet.setColumnWidth(1, 220); sheet.setColumnWidth(2, 720);
 }
 
@@ -43,7 +43,7 @@ function singleBuildCharter_(sheet) {
   sheet.clear(); sheet.getRange(1, 1, rows.length, 2).setValues(rows); styleTable_(sheet, 2, rows.length); sheet.setFrozenRows(1);
   sheet.getRange('B14:B15').setNumberFormat('yyyy-mm-dd'); sheet.getRange('B22:B23').setNumberFormat('yyyy-mm-dd'); sheet.getRange('B16:B18').setNumberFormat('#,##0');
   sheet.getRange('B2:B24').setWrap(true); sheet.setColumnWidth(1, 210); sheet.setColumnWidth(2, 760);
-  const master = singleSheet_(sheet.getParent(), 'Master');
+  const master = singleSheet_(sheet.getParent(), SINGLE_SHEET_NAMES.master);
   setListValidation_(sheet.getRange('B8'), master.getRange('I2:I4'), '全体状態を選択');
   setListValidation_(sheet.getRange('B9'), master.getRange('J2:J6'), '開発アプローチを選択');
   setListValidation_(sheet.getRange('B10'), master.getRange('K2:K6'), 'フェーズを選択');
@@ -54,7 +54,7 @@ function singleBuildWorkItems_(sheet) {
   const rows = SINGLE_PROJECT_SEED.workItems.map(function(item) { return [item.id,item.parentId || '',item.type,item.title,item.status,item.priority,item.owner,singleDate_(item.start),singleDate_(item.due),item.progress || 0,item.estimate || '',item.actual || '',item.milestone || '',item.acceptance || '',item.tags || '',item.url || '',item.memo || '']; });
   sheet.clear(); sheet.getRange(1, 1, 1, headers.length).setValues([headers]); if (rows.length) sheet.getRange(2, 1, rows.length, headers.length).setValues(rows); styleTable_(sheet, headers.length, rows.length + 1);
   sheet.setFrozenRows(1); sheet.setFrozenColumns(3); resetFilter_(sheet, 'A1:Q' + SINGLE_MAX_ROWS);
-  const master = singleSheet_(sheet.getParent(), 'Master'); setListValidation_(sheet.getRange('C2:C' + SINGLE_MAX_ROWS), master.getRange('C2:C4'), '種別を選択'); setListValidation_(sheet.getRange('E2:E' + SINGLE_MAX_ROWS), master.getRange('A2:A7'), '状態を選択'); setListValidation_(sheet.getRange('F2:F' + SINGLE_MAX_ROWS), master.getRange('B2:B5'), '優先度を選択');
+  const master = singleSheet_(sheet.getParent(), SINGLE_SHEET_NAMES.master); setListValidation_(sheet.getRange('C2:C' + SINGLE_MAX_ROWS), master.getRange('C2:C4'), '種別を選択'); setListValidation_(sheet.getRange('E2:E' + SINGLE_MAX_ROWS), master.getRange('A2:A7'), '状態を選択'); setListValidation_(sheet.getRange('F2:F' + SINGLE_MAX_ROWS), master.getRange('B2:B5'), '優先度を選択');
   setDateValidation_(sheet.getRange('H2:I' + SINGLE_MAX_ROWS)); setPercentValidation_(sheet.getRange('J2:J' + SINGLE_MAX_ROWS)); sheet.getRange('H2:I' + SINGLE_MAX_ROWS).setNumberFormat('yyyy-mm-dd'); sheet.getRange('J2:J' + SINGLE_MAX_ROWS).setNumberFormat('0%'); sheet.getRange('K2:L' + SINGLE_MAX_ROWS).setNumberFormat('#,##0');
   sheet.getRange('D2:Q' + SINGLE_MAX_ROWS).setWrapStrategy(SpreadsheetApp.WrapStrategy.WRAP); sheet.setConditionalFormatRules([]); applyStatusRules_(sheet, 'E2:E' + SINGLE_MAX_ROWS); applyPriorityRules_(sheet, 'F2:F' + SINGLE_MAX_ROWS); applyOverdueRule_(sheet, 'I2:I' + SINGLE_MAX_ROWS, '$I2', '$E2');
   [105,95,120,280,105,85,120,105,105,80,90,90,150,240,130,260,240].forEach(function(width, index) { sheet.setColumnWidth(index + 1, width); });
@@ -82,7 +82,7 @@ function singleBuildDecisions_(sheet) {
 }
 
 function singleBuildLogTable_(sheet, headers, rows, filterRange, configure) {
-  sheet.clear(); sheet.getRange(1, 1, 1, headers.length).setValues([headers]); if (rows.length) sheet.getRange(2, 1, rows.length, headers.length).setValues(rows); styleTable_(sheet, headers.length, rows.length + 1); sheet.setFrozenRows(1); sheet.setFrozenColumns(2); resetFilter_(sheet, filterRange); sheet.getRange(2, 1, SINGLE_MAX_ROWS - 1, headers.length).setWrapStrategy(SpreadsheetApp.WrapStrategy.WRAP); sheet.setConditionalFormatRules([]); configure(singleSheet_(sheet.getParent(), 'Master')); for (let column = 1; column <= headers.length; column += 1) sheet.setColumnWidth(column, column < 3 ? 115 : 180);
+  sheet.clear(); sheet.getRange(1, 1, 1, headers.length).setValues([headers]); if (rows.length) sheet.getRange(2, 1, rows.length, headers.length).setValues(rows); styleTable_(sheet, headers.length, rows.length + 1); sheet.setFrozenRows(1); sheet.setFrozenColumns(2); resetFilter_(sheet, filterRange); sheet.getRange(2, 1, SINGLE_MAX_ROWS - 1, headers.length).setWrapStrategy(SpreadsheetApp.WrapStrategy.WRAP); sheet.setConditionalFormatRules([]); configure(singleSheet_(sheet.getParent(), SINGLE_SHEET_NAMES.master)); for (let column = 1; column <= headers.length; column += 1) sheet.setColumnWidth(column, column < 3 ? 115 : 180);
 }
 
 function singleApplyChangeRules_(sheet, a1Range) {
@@ -102,10 +102,10 @@ function singleApplyExposureRules_(sheet, a1Range) {
 }
 
 function singleBuildDashboard_(sheet) {
-  sheet.clear(); sheet.setConditionalFormatRules([]); sheet.getRange('A1:H1').merge().setValue('単一プロジェクト Dashboard'); sheet.getRange('A2:H2').merge().setValue(SINGLE_PROJECT_SEED.project.name + ' — ' + SINGLE_PROJECT_SEED_META.source + '（' + SINGLE_PROJECT_SEED_META.generatedAt + '）');
+  sheet.clear(); sheet.setConditionalFormatRules([]); sheet.getRange('A1:H1').merge().setValue('単一プロジェクト ダッシュボード'); sheet.getRange('A2:H2').merge().setValue(SINGLE_PROJECT_SEED.project.name + ' — ' + SINGLE_PROJECT_SEED_META.source + '（' + SINGLE_PROJECT_SEED_META.generatedAt + '）');
   sheet.getRange('A4:H4').setValues([['全体状態','未完了項目','ブロック','期限超過','高露出RAID','次のMS','予算差異','次回レビュー']]);
-  sheet.getRange('A5:H5').setFormulas([['=\'Project Charter\'!B8','=COUNTIFS(\'Work Items\'!A2:A1000,"<>",\'Work Items\'!E2:E1000,"<>完了",\'Work Items\'!E2:E1000,"<>中止")','=COUNTIF(\'Work Items\'!E2:E1000,"ブロック")+COUNTIF(\'RAID Log\'!D2:D1000,"ブロック")','=COUNTIFS(\'Work Items\'!I2:I1000,"<"&TODAY(),\'Work Items\'!I2:I1000,"<>",\'Work Items\'!E2:E1000,"<>完了",\'Work Items\'!E2:E1000,"<>中止")','=COUNTIFS(\'RAID Log\'!G2:G1000,"高",\'RAID Log\'!D2:D1000,"<>完了",\'RAID Log\'!D2:D1000,"<>中止")','=IFERROR(INDEX(SORT(FILTER({\'Work Items\'!D2:D1000,\'Work Items\'!I2:I1000},\'Work Items\'!C2:C1000="マイルストーン",\'Work Items\'!E2:E1000<>"完了",\'Work Items\'!I2:I1000>=TODAY()),2,TRUE),1,1),"")','=\'Project Charter\'!B17-\'Project Charter\'!B16','=\'Project Charter\'!B23']]);
-  sheet.getRange('A8:D8').setValues([['次のマイルストーン','期限','状態','担当者']]); sheet.getRange('A9').setFormula('=IFERROR(ARRAY_CONSTRAIN(SORT(FILTER({\'Work Items\'!D2:D1000,\'Work Items\'!I2:I1000,\'Work Items\'!E2:E1000,\'Work Items\'!G2:G1000},\'Work Items\'!C2:C1000="マイルストーン",\'Work Items\'!E2:E1000<>"完了"),2,TRUE),8,4),"")'); sheet.getRange('B9:B16').setNumberFormat('yyyy-mm-dd');
+  sheet.getRange('A5:H5').setFormulas([['=\'プロジェクト憲章\'!B8','=COUNTIFS(\'作業項目\'!A2:A1000,"<>",\'作業項目\'!E2:E1000,"<>完了",\'作業項目\'!E2:E1000,"<>中止")','=COUNTIF(\'作業項目\'!E2:E1000,"ブロック")+COUNTIF(\'RAIDログ\'!D2:D1000,"ブロック")','=COUNTIFS(\'作業項目\'!I2:I1000,"<"&TODAY(),\'作業項目\'!I2:I1000,"<>",\'作業項目\'!E2:E1000,"<>完了",\'作業項目\'!E2:E1000,"<>中止")','=COUNTIFS(\'RAIDログ\'!G2:G1000,"高",\'RAIDログ\'!D2:D1000,"<>完了",\'RAIDログ\'!D2:D1000,"<>中止")','=IFERROR(INDEX(SORT(FILTER({\'作業項目\'!D2:D1000,\'作業項目\'!I2:I1000},\'作業項目\'!C2:C1000="マイルストーン",\'作業項目\'!E2:E1000<>"完了",\'作業項目\'!I2:I1000>=TODAY()),2,TRUE),1,1),"")','=\'プロジェクト憲章\'!B17-\'プロジェクト憲章\'!B16','=\'プロジェクト憲章\'!B23']]);
+  sheet.getRange('A8:D8').setValues([['次のマイルストーン','期限','状態','担当者']]); sheet.getRange('A9').setFormula('=IFERROR(ARRAY_CONSTRAIN(SORT(FILTER({\'作業項目\'!D2:D1000,\'作業項目\'!I2:I1000,\'作業項目\'!E2:E1000,\'作業項目\'!G2:G1000},\'作業項目\'!C2:C1000="マイルストーン",\'作業項目\'!E2:E1000<>"完了"),2,TRUE),8,4),"")'); sheet.getRange('B9:B16').setNumberFormat('yyyy-mm-dd');
   sheet.getRange('G5').setNumberFormat('#,##0'); sheet.getRange('H5').setNumberFormat('yyyy-mm-dd');
   sheet.setHiddenGridlines(true); sheet.setFrozenRows(2); sheet.getRange('A1:H20').setFontFamily('Arial').setVerticalAlignment('middle'); sheet.getRange('A1:H1').setBackground('#E8EAED').setFontWeight('bold').setFontSize(18); sheet.getRange('A4:H4').setBackground('#E8EAED').setFontWeight('bold').setWrap(true); sheet.getRange('A5:H5').setFontWeight('bold').setFontSize(14); sheet.getRange('A8:D8').setBackground('#E8EAED').setFontWeight('bold'); [240,130,105,105,120,240,120,120].forEach(function(width, index) { sheet.setColumnWidth(index + 1, width); }); applyHealthRules_(sheet, 'A5');
 }

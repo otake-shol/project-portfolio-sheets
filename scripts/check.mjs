@@ -47,7 +47,7 @@ try {
   assert(!singleFiles.includes('Code.gs') && !singleFiles.includes('CoreSheets.gs'), 'Single profileにportfolio builderが含まれています');
   const singleSource = singleFiles.filter((name) => name.endsWith('.gs')).map((name) => readFileSync(join(singleOutput, name), 'utf8')).join('\n');
   new Function(singleSource);
-  for (const required of ['createSingleProjectWorkbook', 'Project Charter', 'RAID Log', 'マイルストーン', 'PMBOK']) {
+  for (const required of ['createSingleProjectWorkbook', 'プロジェクト憲章', '作業項目', 'RAIDログ', '意思決定・変更ログ', 'マイルストーン', 'PMBOK']) {
     assert(singleSource.includes(required), `Single profileの機能が不足しています: ${required}`);
   }
 } finally {

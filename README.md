@@ -44,9 +44,9 @@ npm run build:single
 npm run build:single -- --seed /path/to/private/single-project.json --out /path/to/private/dist
 ```
 
-Apps Scriptでは`createSingleProjectWorkbook`を実行します。生成するシートはDashboard、Guide、Project Charter、Work Items、RAID Log、Stakeholders、Decision Log、Masterです。マイルストーンはWork Itemsの種別で管理し、予算基準線・予測・実績、全体状態、最終レビューはProject Charterで管理します。変更要求と意思決定はDecision Logに記録します。
+Apps Scriptでは`createSingleProjectWorkbook`を実行します。生成するシートは「ダッシュボード」「ガイド」「プロジェクト憲章」「作業項目」「RAIDログ」「ステークホルダー」「意思決定・変更ログ」「マスター」です。マイルストーンは「作業項目」の種別で管理し、予算基準線・予測・実績、全体状態、最終レビューは「プロジェクト憲章」で管理します。変更要求と意思決定は「意思決定・変更ログ」に記録します。
 
-GuideにはPMBOK第8版の7つのパフォーマンス・ドメイン（ガバナンス、スコープ、スケジュール、財務、ステークホルダー、リソース、リスク）と、テーラリング・価値・品質・説明責任の運用上の対応を記載します。予算／資源の明細、独立した変更台帳、定型Status Reportsは後続拡張として明示し、MVPでは別シートにしません。
+「ガイド」にはPMBOK第8版の7つのパフォーマンス・ドメイン（ガバナンス、スコープ、スケジュール、財務、ステークホルダー、リソース、リスク）と、テーラリング・価値・品質・説明責任の運用上の対応を記載します。予算／資源の明細、独立した変更台帳、定型ステータスレポートは後続拡張として明示し、MVPでは別シートにしません。
 
 ## 非公開データからビルド
 
