@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
+    "build:single": "node scripts/build.mjs --profile single",
     "check": "node scripts/check.mjs"
   },
   "engines": {

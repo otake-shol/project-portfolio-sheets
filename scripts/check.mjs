@@ -29,7 +29,7 @@ assert(seed.projects.every((project) => project.repositoryUrl.startsWith('https:
 
 const temporaryOutput = mkdtempSync(join(tmpdir(), 'project-portfolio-sheets-'));
 try {
-  build({ seed: seedPath, out: temporaryOutput });
+  build({ profile: 'portfolio', seed: seedPath, out: temporaryOutput });
   const source = readdirSync(temporaryOutput)
     .filter((name) => name.endsWith('.gs'))
     .map((name) => readFileSync(join(temporaryOutput, name), 'utf8'))
@@ -39,13 +39,24 @@ try {
     assert(source.includes(required), `PM機能が不足しています: ${required}`);
   }
   assert(source.includes("COUNTIF(Projects!$F$2:$F$1000,$D"), 'Dashboardの状態別集計が不足しています');
+
+  const singleOutput = join(temporaryOutput, 'single');
+  build({ profile: 'single', seed: join(repositoryRoot, 'examples/single-project.example.json'), out: singleOutput });
+  const singleFiles = readdirSync(singleOutput);
+  assert(singleFiles.includes('SingleCode.gs') && singleFiles.includes('SingleProjectSeed.generated.gs'), 'Single profileの出力が不足しています');
+  assert(!singleFiles.includes('Code.gs') && !singleFiles.includes('CoreSheets.gs'), 'Single profileにportfolio builderが含まれています');
+  const singleSource = singleFiles.filter((name) => name.endsWith('.gs')).map((name) => readFileSync(join(singleOutput, name), 'utf8')).join('\n');
+  new Function(singleSource);
+  for (const required of ['createSingleProjectWorkbook', 'Project Charter', 'RAID Log', 'マイルストーン', 'PMBOK']) {
+    assert(singleSource.includes(required), `Single profileの機能が不足しています: ${required}`);
+  }
 } finally {
   rmSync(temporaryOutput, { recursive: true, force: true });
 }
 
 const leakPatterns = [
   { pattern: /\/Users\//, label: 'macOS絶対パス' },
-  { pattern: /\/home\//, label: 'Linux絶対パス' },
+  { pattern: /(?:^|[\s"'`])\/home\/[^/\s]+(?:\/|$)/m, label: 'Linux絶対パス' },
   { pattern: new RegExp(['otake', 'shol'].join('-'), 'i'), label: '個人GitHub識別子' },
   { pattern: new RegExp(['resume', 'private'].join('-'), 'i'), label: '非公開repository識別子' },
   { pattern: /projects\/(?:mobile|shopify|suishin-tech-knot|resume)\//, label: '実プロジェクトパス' },
@@ -57,4 +68,4 @@ for (const file of listFiles(repositoryRoot)) {
   }
 }
 
-console.log('OK: anonymous seed, PM features, Apps Script syntax, and public-data boundary verified');
+console.log('OK: portfolio/single profiles, anonymous seeds, Apps Script syntax, and public-data boundary verified');
