@@ -92,9 +92,12 @@ function buildDashboard_(sheet, seedMeta) {
   sheet.getRange('A9:A13').setFormulas([["=Master!D2"],["=Master!D3"],["=Master!D4"],["=Master!D5"],["=Master!D6"]]);
   for (let row = 9; row <= 13; row++) sheet.getRange(row,2).setFormula('=COUNTIF(Projects!$B$2:$B$1000,$A' + row + ')');
 
-  sheet.getRange('D8:E8').setValues([['健康度','プロジェクト数']]);
-  sheet.getRange('D9:D11').setFormulas([["=Master!I2"],["=Master!I3"],["=Master!I4"]]);
-  for (let row = 9; row <= 11; row++) sheet.getRange(row,5).setFormula('=COUNTIF(Projects!$N$2:$N$1000,$D' + row + ')');
+  sheet.getRange('D8:E8').setValues([['状態','プロジェクト数']]);
+  sheet.getRange('D9:D15').setFormulas([
+    ["=Master!A2"],["=Master!A3"],["=Master!A4"],["=Master!A5"],
+    ["=Master!A6"],["=Master!A7"],["=Master!A8"]
+  ]);
+  for (let row = 9; row <= 15; row++) sheet.getRange(row,5).setFormula('=COUNTIF(Projects!$F$2:$F$1000,$D' + row + ')');
 
   sheet.getRange('G8:J8').setValues([['Project ID','直近マイルストーン','状態','期限']]);
   sheet.getRange('G9').setFormula('=IFERROR(ARRAY_CONSTRAIN(SORT(FILTER({\'Risks & Milestones\'!B2:B1000,\'Risks & Milestones\'!C2:C1000,\'Risks & Milestones\'!D2:D1000,\'Risks & Milestones\'!H2:H1000},\'Risks & Milestones\'!A2:A1000="マイルストーン",\'Risks & Milestones\'!H2:H1000>=TODAY(),\'Risks & Milestones\'!D2:D1000<>"完了",\'Risks & Milestones\'!D2:D1000<>"中止"),4,TRUE),7,4),"")');

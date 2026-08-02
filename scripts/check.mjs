@@ -38,6 +38,7 @@ try {
   for (const required of ['Dependencies', 'Milestone Timeline', 'Decision Log', '健康度', '更新漏れ', '7日以内MS', '30日以内MS']) {
     assert(source.includes(required), `PM機能が不足しています: ${required}`);
   }
+  assert(source.includes("COUNTIF(Projects!$F$2:$F$1000,$D"), 'Dashboardの状態別集計が不足しています');
 } finally {
   rmSync(temporaryOutput, { recursive: true, force: true });
 }
