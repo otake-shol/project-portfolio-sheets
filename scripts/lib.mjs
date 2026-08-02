@@ -71,7 +71,7 @@ export function validateSingleSeed(seed) {
   });
   const ids = new Set();
   [
-    ['workItems', ['start', 'due']],
+    ['workItems', ['start', 'due', 'baselineStart', 'baselineEnd', 'actualStart', 'actualEnd']],
     ['raid', ['registered', 'due']],
     ['stakeholders', ['last', 'next']],
     ['changesDecisions', ['registered', 'target', 'decisionDate']],
@@ -88,6 +88,7 @@ export function validateSingleSeed(seed) {
   const workItemIds = new Set(seed.workItems.map(function(item) { return item.id; }));
   seed.workItems.forEach(function(item) {
     if (item.parentId) assert(workItemIds.has(item.parentId), `${item.id}: 親IDが存在しません: ${item.parentId}`);
+    if (item.level !== undefined) assert(Number.isInteger(item.level) && item.level >= 1 && item.level <= 10, `${item.id}: levelは1から10の整数です`);
     if (item.progress !== undefined) assert(item.progress >= 0 && item.progress <= 1, `${item.id}: progressは0から1です`);
   });
   return seed;

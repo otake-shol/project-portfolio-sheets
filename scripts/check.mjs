@@ -47,9 +47,11 @@ try {
   assert(!singleFiles.includes('Code.gs') && !singleFiles.includes('CoreSheets.gs'), 'Single profileにportfolio builderが含まれています');
   const singleSource = singleFiles.filter((name) => name.endsWith('.gs')).map((name) => readFileSync(join(singleOutput, name), 'utf8')).join('\n');
   new Function(singleSource);
-  for (const required of ['createSingleProjectWorkbook', 'プロジェクト憲章', '作業項目', 'RAIDログ', '意思決定・変更ログ', 'マイルストーン', 'PMBOK']) {
+  for (const required of ['createSingleProjectWorkbook', 'rebuildActiveSingleProjectWorkbook', 'プロジェクト憲章', 'WBS', 'ガントチャート', '基準開始日', '実績開始日', '先行タスク', 'RAIDログ', '意思決定・変更ログ', 'マイルストーン', 'PMBOK']) {
     assert(singleSource.includes(required), `Single profileの機能が不足しています: ${required}`);
   }
+  assert(singleSource.includes("COUNTIFS(\\'WBS\\'!A2:A1000"), 'DashboardのWBS集計が不足しています');
+  assert(singleSource.includes('SINGLE_GANTT_PERIODS = 52'), 'ガントチャートの表示期間設定が不足しています');
 } finally {
   rmSync(temporaryOutput, { recursive: true, force: true });
 }
