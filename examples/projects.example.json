@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-01-01",
+  "source": "anonymous example",
+  "projects": [
+    {
+      "projectId": "PRJ-001",
+      "category": "Web",
+      "name": "sample-web",
+      "localPath": "/workspace/sample-web",
+      "managementType": "git submodule",
+      "status": "棚卸し待ち",
+      "priority": "",
+      "owner": "",
+      "nextAction": "状態・優先度・担当者を棚卸し",
+      "dueDate": "",
+      "repositoryUrl": "https://example.com/sample-web.git",
+      "memo": "",
+      "lastConfirmedAt": "2026-01-01"
+    },
+    {
+      "projectId": "PRJ-002",
+      "category": "モバイル",
+      "name": "sample-mobile",
+      "localPath": "/workspace/sample-mobile",
+      "managementType": "git submodule",
+      "status": "棚卸し待ち",
+      "priority": "",
+      "owner": "",
+      "nextAction": "状態・優先度・担当者を棚卸し",
+      "dueDate": "",
+      "repositoryUrl": "https://example.com/sample-mobile.git",
+      "memo": "",
+      "lastConfirmedAt": "2026-01-01"
+    },
+    {
+      "projectId": "PRJ-003",
+      "category": "キャリア",
+      "name": "sample-career",
+      "localPath": "/workspace/sample-career",
+      "managementType": "git submodule",
+      "status": "棚卸し待ち",
+      "priority": "",
+      "owner": "",
+      "nextAction": "状態・優先度・担当者を棚卸し",
+      "dueDate": "",
+      "repositoryUrl": "https://example.com/sample-career.git",
+      "memo": "",
+      "lastConfirmedAt": "2026-01-01"
+    }
+  ]
+}

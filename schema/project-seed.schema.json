@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/project-portfolio-sheets/project-seed.schema.json",
+  "title": "Project Portfolio Seed",
+  "type": "object",
+  "required": ["schemaVersion", "generatedAt", "source", "projects"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "generatedAt": { "type": "string", "format": "date" },
+    "source": { "type": "string", "minLength": 1 },
+    "projects": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "projectId", "category", "name", "localPath", "managementType",
+          "status", "priority", "owner", "nextAction", "dueDate",
+          "repositoryUrl", "memo", "lastConfirmedAt"
+        ],
+        "properties": {
+          "projectId": { "type": "string", "pattern": "^PRJ-[0-9]{3,}$" },
+          "category": { "type": "string", "minLength": 1 },
+          "name": { "type": "string", "minLength": 1 },
+          "localPath": { "type": "string" },
+          "managementType": { "type": "string", "minLength": 1 },
+          "status": { "type": "string", "minLength": 1 },
+          "priority": { "type": "string" },
+          "owner": { "type": "string" },
+          "nextAction": { "type": "string" },
+          "dueDate": { "type": "string" },
+          "repositoryUrl": { "type": "string" },
+          "memo": { "type": "string" },
+          "lastConfirmedAt": { "type": "string", "format": "date" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

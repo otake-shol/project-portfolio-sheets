@@ -1,0 +1,14 @@
+{
+  "name": "project-portfolio-sheets",
+  "version": "2.0.0",
+  "private": true,
+  "description": "プロジェクト横断管理Googleスプレッドシートの公開テンプレート",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/check.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

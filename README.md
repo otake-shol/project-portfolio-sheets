@@ -1,0 +1,58 @@
+# Project Portfolio Sheets
+
+プロジェクト横断管理用のネイティブGoogleスプレッドシートを生成・更新する、公開用Apps Scriptテンプレートです。
+
+実プロジェクトの名称、ローカルパス、Repository URLは含みません。公開リポジトリには匿名サンプルだけを置き、実データは別の非公開リポジトリからビルド時に注入する構成です。
+
+## 管理できる内容
+
+- Dashboard: 全件、進行中、要確認、期限超過、ブロック、危険、更新漏れ、直近マイルストーン
+- Projects: プロジェクト台帳と自動健康度（健全／注意／危険）
+- Tasks: プロジェクトに紐づく実行項目
+- Risks & Milestones: リスクとマイルストーンの入力元
+- Dependencies: プロジェクト間の依存関係とブロッカー
+- Milestone Timeline: マイルストーンの予定表
+- Decision Log: 意思決定と見直し履歴
+- Master: 入力候補と更新期限設定
+
+入力規則、フィルター、固定ヘッダー、条件付き書式をApps Scriptで設定します。詳細は[データモデル](docs/data-model.md)を参照してください。
+
+## 匿名サンプルからビルド
+
+Node.js 18以上で実行します。
+
+```bash
+npm run build
+npm run check
+```
+
+`npm run build`は`examples/projects.example.json`を使い、`dist/`へApps Script一式を生成します。
+
+## 非公開データからビルド
+
+Project Seed Schemaに準拠したJSONを`--seed`で渡します。入力ファイルは公開リポジトリへコピーされません。
+
+```bash
+npm run build -- --seed /path/to/private/projects.json --out /path/to/private/dist
+```
+
+`.clasp.json.example`を参考に、生成先を`rootDir`として`clasp push`します。Apps Scriptエディタで次の関数を実行できます。
+
+- `createProjectPortfolio`: 新しいスプレッドシートを作成
+- `upgradeProjectPortfolio(spreadsheetId)`: 既存スプレッドシートへPM機能を追加
+- `verifyProjectPortfolio`: 主要シート、数式、入力規則、数式エラーを検証
+
+Apps Scriptエディタから既存シートを更新する場合は、非公開側にIDを置いた引数なしのラッパー関数を用意してください。IDは公開リポジトリへコミットしません。
+
+```javascript
+function upgradeMyPortfolio() {
+  return upgradeProjectPortfolio('YOUR_PRIVATE_SPREADSHEET_ID');
+}
+```
+
+## データ境界
+
+- 公開: Apps Script、匿名サンプル、JSON Schema、ドキュメント、検証コード
+- 非公開: 実プロジェクト名、絶対パス、Repository URL、実シートID、生成済みseed
+
+`npm run check`は公開ファイルを走査し、実データ由来の絶対パスや既知の識別子が混入していないことも確認します。
