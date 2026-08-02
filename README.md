@@ -4,6 +4,13 @@
 
 実プロジェクトの名称、ローカルパス、Repository URLは含みません。公開リポジトリには匿名サンプルだけを置き、実データは別の非公開リポジトリからビルド時に注入する構成です。
 
+## Google Driveで試す
+
+- [公開テンプレートを開く](https://docs.google.com/spreadsheets/d/1bQCev4HdxU6qpLsIQAqIPkZf7SXVCLwJknwIDBn-TSU/edit?usp=sharing)
+- [自分のGoogle Driveへコピーする](https://docs.google.com/spreadsheets/d/1bQCev4HdxU6qpLsIQAqIPkZf7SXVCLwJknwIDBn-TSU/copy)
+
+公開テンプレートは閲覧専用で、匿名サンプル3件を収録しています。編集する場合はコピーを作成してください。
+
 ## 管理できる内容
 
 - Dashboard: 全件、進行中、要確認、期限超過、ブロック、危険、更新漏れ、7日／30日以内のマイルストーン、カテゴリ別・状態別一覧
